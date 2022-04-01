@@ -30,14 +30,7 @@ question_columns = ['aboutme_dev', 'aboutme_dev_type', 'aboutme_age', 'aboutme_g
                     'life_fun', 'life_safe', 'life_givefun', 'adventure_creative',
                     'adventure_idea', 'adventure_fun']
 
-model_question_columns = ['dev_eat', 'dev_headphone', 'dev_team_size', 'dev_worktime',
-       'moral_cctv', 'life_good', 'life_job', 'life_safe', 'life_fun',
-       'life_givefun', 'adventure_creative', 'adventure_fun', 'adventure_idea',
-       'moral_environment', 'moral_gov_protection', 'moral_help',
-       'moral_manner', 'moral_rule', 'relation_equal', 'relation_friends',
-       'relation_humble', 'relation_region', 'relation_understand',
-       'success_admire', 'success_leader', 'success_own_decision',
-       'success_recognize', 'success_rich']
+
 
 @api.route('/surveys/results_test')  # 데코레이터 이용, '/hello' 경로에 클래스 등록
 class HelloWorld(Resource):
@@ -64,21 +57,15 @@ class recommendationService(Resource):
         result = {}
 
         for param in params['surveyResult']:
-            print(param)
             if param['questionInitial'] not in question_columns:
                 break
-            if param['questionInitial'] != 'aboutme_dev_type' and param['answerSeq'] is not None:
-                result[param['questionInitial']] = [param['answerSeq']]
+            result[param['questionInitial']] = [param['answerSeq']]
 
-        print(result)
-        print(result.keys())
-        print(len(result))
         data = pd.DataFrame(data=result)
-        print(data)
-        model_question = data[model_question_columns]
-        print(model_question)
-        print(recommendation(model_question))
-        return params_str
+
+        result = recommendation(data)
+        print(result)
+        return result
 
 
 if __name__ == "__main__":
