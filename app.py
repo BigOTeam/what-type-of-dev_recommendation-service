@@ -3,7 +3,7 @@ from flask_restx import Api, Resource, fields  # Api 구현을 위한 Api 객체
 from flask import json
 import pandas as pd
 from dto.job_class import job_data
-from service.recommendationSevice import recommendation
+from service.recommendationService import recommendation
 
 
 app = Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌.
@@ -79,6 +79,7 @@ class recommendationService(Resource):
         print(model_question)
         print(recommendation(model_question))
         return params_str
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=8083)
