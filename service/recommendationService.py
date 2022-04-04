@@ -11,22 +11,28 @@ model_question_columns = ['dev_eat', 'dev_headphone', 'dev_team_size', 'dev_work
        'success_admire', 'success_leader', 'success_own_decision',
        'success_recognize', 'success_rich']
 
+model = tf.keras.models.load_model('model/dnn_estate_sigmoid.h5')
+
+
 def recommendation(data):
-    model_question = data[model_question_columns]
 
-    model = tf.keras.models.load_model('model/dnn_estate_sigmoid.h5')
+    try:
+        model_question = data[model_question_columns]
 
-    # test data에 대한 예측값
-    job_pred = model.predict(model_question)
+        # test data에 대한 예측값
+        job_pred = model.predict(model_question)
 
-    job_rank = find_job_rank(job_pred)
-    print(job_pred)
-    job_result = pd.DataFrame(job_pred)
-    job_result.columns = ['job_website', 'job_utilities', 'job_database', 'job_system_software',
-                        'job_it_infrastrucutre', 'job_frinance', 'job_data_science',
-                        'job_programming_tools', 'job_enetertainment', 'job_games']
+        job_rank = find_job_rank(job_pred)
+        print(job_pred)
+        job_result = pd.DataFrame(job_pred)
+        job_result.columns = ['job_website', 'job_utilities', 'job_database', 'job_system_software',
+                            'job_it_infrastructure', 'job_finance', 'job_data_science',
+                            'job_programming_tools', 'job_entertainment', 'job_games']
 
-    survey_result = pd.concat([data, job_result], axis=1)
-    save_recommendation(survey_result)
+        survey_result = pd.concat([data, job_result], axis=1)
+        save_recommendation(survey_result)
 
+    except Exception as e:
+        print(e)
+        raise
     return job_rank

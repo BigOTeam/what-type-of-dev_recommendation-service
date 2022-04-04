@@ -1,4 +1,4 @@
-from flask import Flask, request  # 서버 구현을 위한 Flask 객체 import
+from flask import Flask, request, make_response, jsonify  # 서버 구현을 위한 Flask 객체 import
 from flask_restx import Api, Resource, fields  # Api 구현을 위한 Api 객체 import
 from flask import json
 import pandas as pd
@@ -32,7 +32,7 @@ question_columns = ['aboutme_dev', 'aboutme_dev_type', 'aboutme_age', 'aboutme_g
 
 
 
-@api.route('/surveys/results_test')  # 데코레이터 이용, '/hello' 경로에 클래스 등록
+@api.route('/rec-api/v1/surveys/results_test')  # 데코레이터 이용, '/hello' 경로에 클래스 등록
 class HelloWorld(Resource):
     def post(self):  # GET 요청시 리턴 값에 해당 하는 dict를 JSON 형태로 반환
         rankData = []
@@ -41,31 +41,38 @@ class HelloWorld(Resource):
         rankData.append(job_data(3, 6, "Finance", "", "https://i.ibb.co/SvD3jKG/Finance.png").__dict__)
         j = job_data(3, 6, "Finance", "", "https://i.ibb.co/SvD3jKG/Finance.png")
         print(j.__dict__)
-        return {"rankData": rankData}
+        return make_response(jsonify({"rankData": rankData}), 200)
 
 
-@api.route('/surveys/results')
+@api.route('/rec-api/v1/surveys/results')
 class recommendationService(Resource):
     @api.expect(surveyResult)
     def post(self):
         params = json.loads(request.get_data(), encoding='utf-8')
         print(params)
         if len(params) == 0:
-            return 'No parameter'
+            return make_response(jsonify({"code": "no_param", "message": "data 없음"}), 412)
 
-        params_str = ''
         result = {}
+        print(params['surveyResult'])
+        print(len(params['surveyResult']))
+        if len(params['surveyResult']) != 36:
+            return make_response(jsonify({"code": "columns_error", "message": "잘못된 컬럼"}), 412)
 
         for param in params['surveyResult']:
             if param['questionInitial'] not in question_columns:
-                break
+                return make_response(jsonify({"code": "columns_error", "message": "잘못된 컬럼"}), 412)
+            if param['questionInitial'] != 'aboutme_dev_type' and param['answerSeq'] is None:
+                return make_response(jsonify({"code": "answer_error", "message": param['questionInitial']+"가 입력되지 않았습니다."}), 412)
             result[param['questionInitial']] = [param['answerSeq']]
 
         data = pd.DataFrame(data=result)
-
-        result = recommendation(data)
+        try:
+            result = recommendation(data)
+        except Exception as e:
+            return make_response(jsonify({"code": "server_error", "message": "server_error"}), 500)
         print(result)
-        return result
+        return make_response(jsonify({"rankData": result}), 200)
 
 
 if __name__ == "__main__":
