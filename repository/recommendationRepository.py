@@ -11,6 +11,17 @@ db_connection_str = 'mysql+pymysql://' + db_confing['user'] + ":" + db_confing["
                     + db_confing["HOST"] + ":" + db_confing["port"] + "/" + db_confing["SCHEMA"]
 db_connection = create_engine(db_connection_str)
 
+job_name = {"Websites": "웹개발자",
+       "Utilities": "유틸 소프트웨어 개발자",
+       "Database": "DB 엔지니어",
+       "SystemSoftware": "OS 개발자",
+       "ITInfrastructure": "인프라 엔지니어",
+       "Finance": "금융권 개발자",
+       "Data Science": "데이터 엔지니어",
+       "ProgrammingTools": "개발툴 개발자",
+       "Entertainment": "엔터테인먼트 개발자",
+       "Game": "게임 개발자"}
+
 
 def save_recommendation(result):
     try:
@@ -40,7 +51,7 @@ def find_job_rank(job_result):
             job = result.to_dict('records')[0]
             print("job", job)
             rank_data.append(
-                job_data(i, job['job_id'], job['job_name'], job['job_description'], job['job_img']).__dict__)
+                job_data(i, job['job_id'], job_name[job['job_name']], job['job_description'], job['job_img']).__dict__)
     except Exception as e:
         print(e)
         raise
