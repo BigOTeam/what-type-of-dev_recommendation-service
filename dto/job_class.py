@@ -4,4 +4,4 @@ class job_data:
         self.jobId = job_id
         self.jobName = job_name
         self.jobDescription = job_description
-        self.jobImgUrl = job_img
+        self.jobImg = job_img
