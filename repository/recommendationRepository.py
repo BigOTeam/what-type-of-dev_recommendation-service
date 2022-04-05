@@ -17,7 +17,7 @@ job_name = {"Websites": "웹개발자",
        "SystemSoftware": "OS 개발자",
        "ITInfrastructure": "인프라 엔지니어",
        "Finance": "금융권 개발자",
-       "Data Science": "데이터 엔지니어",
+       "DataScience": "데이터 엔지니어",
        "ProgrammingTools": "개발툴 개발자",
        "Entertainment": "엔터테인먼트 개발자",
        "Game": "게임 개발자"}
