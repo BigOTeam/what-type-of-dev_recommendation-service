@@ -61,10 +61,11 @@ class recommendationService(Resource):
 
             result[param['questionInitial']] = [param['answerSeq']]
 
-        if result['aboutme_dev'][0] == 1 and 'aboutme_dev_type' not in result:
-            result['aboutme_dev_type'] = None
-        else:
-            return make_response(jsonify({"code": "columns_error2", "message": "잘못된 컬럼"}), 412)
+        if result['aboutme_dev'][0] == 1:
+            if 'aboutme_dev_type' not in result:
+                result['aboutme_dev_type'] = None
+            else:
+                return make_response(jsonify({"code": "columns_error2", "message": "잘못된 컬럼"}), 412)
 
         if len(result) != 36:
             return make_response(jsonify({"code": "columns_error3", "message": "잘못된 컬럼"}), 412)
