@@ -6,14 +6,14 @@ from dto.job_class import job_data
 
 with open("config.json", 'r') as f:
     db_confing = json.load(f)
-print("db", db_confing)
+
 db_connection_str = 'mysql+pymysql://' + db_confing['user'] + ":" + db_confing["password"] + "@" \
                     + db_confing["HOST"] + ":" + db_confing["port"] + "/" + db_confing["SCHEMA"]
 db_connection = create_engine(db_connection_str)
 
 with open("job.json", 'r', encoding='UTF8') as j:
     job_name = json.load(j)
-print("db", job_name)
+
 
 
 def save_recommendation(result):
@@ -33,16 +33,14 @@ def find_job_rank(job_result):
         job_rank = job_result[0].argsort() + 1
         job_rank = job_rank.tolist()
 
-        print("job_rank", job_rank)
-        print(job_rank.index(1))
         sql = "select * from tb_job where job_id="
 
         for i in range(1, 4):
             job_code = job_rank.index(i) + 1
             result = pd.read_sql_query(sql + str(job_code), conn)
-            print("result", result)
+
             job = result.to_dict('records')[0]
-            print("job", job)
+
             rank_data.append(
                 job_data(i, job['job_id'], job_name[job['job_name']], job['job_description'], job['job_img']).__dict__)
     except Exception as e:

@@ -23,7 +23,7 @@ def recommendation(data):
         job_pred = model.predict(model_question)
 
         job_rank = find_job_rank(job_pred)
-        print(job_pred)
+
         job_result = pd.DataFrame(job_pred)
         job_result.columns = ['job_website', 'job_utilities', 'job_database', 'job_system_software',
                             'job_it_infrastructure', 'job_finance', 'job_data_science',
