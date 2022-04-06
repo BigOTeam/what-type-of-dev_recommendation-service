@@ -54,7 +54,7 @@ class recommendationService(Resource):
 
         for param in params['surveyResult']:
             if param['questionInitial'] not in question_columns:
-                return make_response(jsonify({"code": "columns_error1", "message": "잘못된 컬럼"}), 412)
+                return make_response(jsonify({"code": "columns_error", "message": "잘못된 컬럼"}), 412)
             if param['questionInitial'] != 'aboutme_dev_type' and param['answerSeq'] is None:
                 return make_response(
                     jsonify({"code": "answer_error", "message": param['questionInitial'] + "가 입력되지 않았습니다."}), 412)
@@ -65,10 +65,10 @@ class recommendationService(Resource):
             if 'aboutme_dev_type' not in result:
                 result['aboutme_dev_type'] = None
             else:
-                return make_response(jsonify({"code": "columns_error2", "message": "잘못된 컬럼"}), 412)
+                return make_response(jsonify({"code": "columns_error", "message": "잘못된 컬럼"}), 412)
 
         if len(result) != 36:
-            return make_response(jsonify({"code": "columns_error3", "message": "잘못된 컬럼"}), 412)
+            return make_response(jsonify({"code": "columns_error", "message": "잘못된 컬럼"}), 412)
 
         data = pd.DataFrame(data=result)
         try:
