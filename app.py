@@ -61,7 +61,7 @@ class recommendationService(Resource):
 
             result[param['questionInitial']] = [param['answerSeq']]
 
-        if result['aboutme_dev'][0] == 1:
+        if result['aboutme_dev'][0] == 2:
             if 'aboutme_dev_type' not in result:
                 result['aboutme_dev_type'] = None
             else:
