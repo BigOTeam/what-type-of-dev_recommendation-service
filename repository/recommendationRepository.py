@@ -6,21 +6,14 @@ from dto.job_class import job_data
 
 with open("config.json", 'r') as f:
     db_confing = json.load(f)
-    print("db", db_confing)
+print("db", db_confing)
 db_connection_str = 'mysql+pymysql://' + db_confing['user'] + ":" + db_confing["password"] + "@" \
                     + db_confing["HOST"] + ":" + db_confing["port"] + "/" + db_confing["SCHEMA"]
 db_connection = create_engine(db_connection_str)
 
-job_name = {"Websites": "웹개발자",
-       "Utilities": "유틸 소프트웨어 개발자",
-       "Database": "DB 엔지니어",
-       "SystemSoftware": "OS 개발자",
-       "ITInfrastructure": "인프라 엔지니어",
-       "Finance": "금융권 개발자",
-       "DataScience": "데이터 엔지니어",
-       "ProgrammingTools": "개발툴 개발자",
-       "Entertainment": "엔터테인먼트 개발자",
-       "Game": "게임 개발자"}
+with open("job.json", 'r', encoding='UTF8') as j:
+    job_name = json.load(j)
+print("db", job_name)
 
 
 def save_recommendation(result):
