@@ -1,4 +1,4 @@
-FROM python:3.5.10
+FROM python:3.8.5
 
 RUN mkdir /app
 
