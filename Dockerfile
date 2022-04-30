@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.8.0
+FROM python:3.8.5
 
 RUN mkdir /app
 
